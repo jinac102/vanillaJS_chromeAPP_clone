@@ -3,15 +3,28 @@ const logInput = logForm.querySelector("input");
 const logBtn = logForm.querySelector("button");
 const greeting = document.querySelector("#greeting");
 
-const hidden_CL = "hidden";
+const hidden_class = "hidden";
+const username_Key = "username";
 
 function ClickBtn(e) {
   e.preventDefault();
-  logForm.classList.add(hidden_CL);
+  logForm.classList.add(hidden_class);
   const userName = logInput.value;
-  greeting.innerText = `Hello ${userName}`;
-  logForm.classList.remove(hidden_CL);
-  //consolie.dir()은 ()사이에 든 태그가 가진 정보를 전부 보여준다.
+
+  localStorage.setItem(username_Key, userName);
+  greetingH1(userName);
 }
 
-logBtn.addEventListener("click", ClickBtn);
+//로컬스토리지에 저장되어있는지 확인하기
+const saveUsername = localStorage.getItem(username_Key);
+function greetingH1(userName) {
+  greeting.innerText = `Hello ${userName}`;
+  greeting.classList.remove(hidden_class);
+}
+
+if (saveUsername === null) {
+  logForm.classList.remove(hidden_class);
+  logForm.addEventListener("submit", ClickBtn);
+} else {
+  greetingH1(saveUsername);
+}
